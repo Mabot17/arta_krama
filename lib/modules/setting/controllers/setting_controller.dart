@@ -4,44 +4,42 @@ import 'package:arta_krama/core/utils/database_helper.dart'; // Import StorageSe
 import 'package:arta_krama/widgets/widget_snackbar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SettingController {
   final StorageService _storage = StorageService();
 
   Future<void> backupDatabaseToDownload() async {
-    // Mendapatkan path database yang disimpan di aplikasi
+    // Cek izin penyimpanan
+    if (!await Permission.storage.request().isGranted) {
+      WidgetSnackbar.danger("Gagal", "Izin akses penyimpanan ditolak.");
+      return;
+    }
+
+    // Ambil path file database
     final dbPath = await _storage.read('offline_db_path') ?? '';
     if (dbPath.isEmpty) {
       WidgetSnackbar.danger("Gagal", "Path database tidak ditemukan!");
       return;
     }
 
-    // Mendapatkan path folder Download pada penyimpanan eksternal
-    final downloadDir = Directory('/storage/emulated/0/Download');
-    if (!await downloadDir.exists()) {
-      await downloadDir.create(
-        recursive: true,
-      ); // Membuat folder Download jika belum ada
-    }
-
-    final filename = dbPath.split('/').last;
-    final destinationPath = '${downloadDir.path}/$filename';
-
-    // Menyalin file ke folder Download
-    final sourceFile = File(dbPath);
-    // final destinationFile = File(destinationPath);
-
     try {
+      // Ambil folder Download via path umum
+      final downloadsDir = Directory('/storage/emulated/0/Download');
+      if (!await downloadsDir.exists()) {
+        await downloadsDir.create(recursive: true);
+      }
+
+      final filename = dbPath.split('/').last;
+      final destinationPath = '${downloadsDir.path}/$filename';
+
+      final sourceFile = File(dbPath);
       await sourceFile.copy(destinationPath);
-      WidgetSnackbar.success(
-        "Sukses",
-        "Data berhasil di backup, silahkan cek folder download",
-      );
+
+      WidgetSnackbar.success("Sukses", "Data berhasil di-backup ke folder Download.");
     } catch (e) {
-      WidgetSnackbar.danger(
-        "Gagal",
-        "Gagal memindahkan file ke folder Download.",
-      );
+      print("Backup error: $e");
+      WidgetSnackbar.danger("Gagal", "Gagal memindahkan file ke folder Download.");
     }
   }
 

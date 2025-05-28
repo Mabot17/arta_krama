@@ -10,7 +10,7 @@ class WidgetAppBar extends StatelessWidget implements PreferredSizeWidget {
   const WidgetAppBar({
     Key? key,
     required this.title, // ✅ Bisa String atau Widget
-    this.backgroundColor = const Color(0xFF1A237E), // 🎨 Default ungu gelap
+    this.backgroundColor = const Color(0xFF32CD32),
     this.leading,
     this.actions,
     this.elevation,
