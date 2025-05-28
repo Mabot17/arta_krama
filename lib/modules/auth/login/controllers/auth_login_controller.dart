@@ -54,4 +54,29 @@ class AuthController extends GetxController {
     isLoggedIn.value = _authService.isLoggedIn();
     super.onInit();
   }
+
+  void handleMenuLoginTap(Map<String, dynamic> item) {
+    print("✅ Click Menu :  ${item['route']}");
+
+    if (item['route'] == null) {
+      Get.snackbar(
+        "Info",
+        "Fitur belum tersedia",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+
+    try {
+      Get.toNamed(item['route']);
+    } catch (e) {
+      print("❌ Error navigating to ${item['route']}: $e");
+      Get.toNamed(AppRoutesConstants.maintenance);
+      Get.snackbar(
+        "Error",
+        "Halaman tidak ditemukan atau belum terdaftar.",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
 }

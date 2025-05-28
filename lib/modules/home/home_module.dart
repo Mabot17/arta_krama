@@ -9,7 +9,7 @@ class HomeModule {
       name: AppRoutesConstants.home,
       page: () => HomeView(),
       binding: BindingsBuilder(() {
-        Get.put(HomeController());
+        Get.lazyPut<HomeController>(() => HomeController());
       }),
     ),
   ];

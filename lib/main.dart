@@ -7,7 +7,6 @@ import 'package:path/path.dart';
 import 'app.dart';
 import 'routes/app_routes_constant.dart';
 import 'package:arta_krama/modules/auth/login/controllers/auth_login_controller.dart';
-import 'package:arta_krama/modules/home/controllers/home_controller.dart';
 import 'package:arta_krama/core/utils/storage_service.dart';
 import 'package:arta_krama/core/utils/database_helper.dart';
 
@@ -34,7 +33,6 @@ Future<void> main() async {
 
   // Inisialisasi global controller
   Get.put(AuthController());
-  Get.put(HomeController());
 
   // Menentukan initial route
   final String? token = await storageService.read<String>('access_token');

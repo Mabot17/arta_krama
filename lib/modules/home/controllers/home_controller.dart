@@ -41,9 +41,11 @@ class HomeController extends GetxController {
       userData = {};
     }
 
-    username.value = userData['username'] ?? 'Unknown';  // Sesuaikan key username
+    username.value = userData['username'] ?? 'Unknown'; // Sesuaikan key username
     // print(menuJson);
-    menuData.value = List<Map<String, dynamic>>.from(jsonDecode(menuJson)['sections']);
+    menuData.value = List<Map<String, dynamic>>.from(
+      jsonDecode(menuJson)['sections'],
+    );
   }
 
   void logout() {

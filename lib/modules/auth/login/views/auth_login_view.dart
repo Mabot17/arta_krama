@@ -1,13 +1,11 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:arta_krama/modules/auth/login/controllers/auth_login_controller.dart';
-import 'package:arta_krama/modules/home/controllers/home_controller.dart';
 
 class LoginView extends StatelessWidget {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final AuthController controller = Get.find<AuthController>();
-  final HomeController _home_controller = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +78,7 @@ class LoginView extends StatelessWidget {
                   // Register
                   TextButton(
                     onPressed: () {
-                      _home_controller.handleMenuTap({'route': '/register'});
+                      controller.handleMenuLoginTap({'route': '/register'});
                     },
                     child: const Text(
                       "Don't have an account? Register",
@@ -110,7 +108,7 @@ class LoginView extends StatelessWidget {
                 child: IconButton(
                   icon: const Icon(Icons.settings, color: Color(0xFF32CD32)),
                   onPressed: () {
-                    _home_controller.handleMenuTap({'route': '/setting'});
+                    controller.handleMenuLoginTap({'route': '/setting'});
                   },
                 ),
               ),
