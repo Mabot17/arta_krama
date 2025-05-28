@@ -24,18 +24,6 @@ class KasMasukController extends GetxController {
   void onInit() {
     super.onInit();
     fetchData();
-
-    final kas = Get.arguments as KasMasuk?;
-    if (kas != null) {
-      editingKas = kas;
-      // Model kamu tidak punya kasJenis property, jadi pakai default 'kas_masuk'
-      // Jika suatu saat perlu, bisa disimpan di variabel lain
-      jenisKas.value = 'kas_masuk'; 
-      caraKas.value = kas.cara;
-      jumlahKasController.text = kas.jumlah.toString();
-      tanggalKasController.text = kas.tanggal;
-      norekKasController.text = kas.norek;
-    }
   }
 
   @override
@@ -49,20 +37,10 @@ class KasMasukController extends GetxController {
   Future<void> fetchData() async {
     try {
       final data = await _kasMasukService.getAll();
+      print("Data fetched: ${data.length} items");
       kasMasukList.assignAll(data);
     } catch (e) {
-      WidgetSnackbar.danger("Gagal", "Gagal memuat data kas masuk");
-    }
-  }
-
-  Future<void> addKas(KasMasuk kas) async {
-    try {
-      await _kasMasukService.insert(kas);
-      fetchData();
-      WidgetSnackbar.success("Sukses", "Kas masuk berhasil ditambahkan");
-      Get.back();
-    } catch (e) {
-      WidgetSnackbar.danger("Gagal", "Gagal menambah kas masuk");
+      WidgetSnackbar.warning("Peringatan", "Data kas masuk tidak ditemukan");
     }
   }
 
@@ -95,34 +73,42 @@ class KasMasukController extends GetxController {
     Get.toNamed(AppRoutesConstants.kasMasukForm, arguments: kas);
   }
 
-  void saveKas() {
-    final jumlahText = jumlahKasController.text.trim();
-    final tanggalText = tanggalKasController.text.trim();
-    final norekText = norekKasController.text.trim();
+  Future<void> saveKas() async {
+    try {
+      final jumlahText = jumlahKasController.text.trim();
+      final tanggalText = tanggalKasController.text.trim();
+      final norekText = norekKasController.text.trim();
 
-    if (jumlahText.isEmpty || tanggalText.isEmpty) {
-      WidgetSnackbar.danger("Error", "Jumlah dan Tanggal wajib diisi");
-      return;
-    }
+      if (jumlahText.isEmpty || tanggalText.isEmpty) {
+        WidgetSnackbar.danger("Error", "Jumlah dan Tanggal wajib diisi");
+        return;
+      }
 
-    final jumlah = double.tryParse(jumlahText);
-    if (jumlah == null) {
-      WidgetSnackbar.danger("Error", "Jumlah tidak valid");
-      return;
-    }
+      final jumlah = double.tryParse(jumlahText);
+      if (jumlah == null) {
+        WidgetSnackbar.danger("Error", "Jumlah tidak valid");
+        return;
+      }
 
-    final kas = KasMasuk(
-      id: editingKas?.id,
-      cara: caraKas.value,
-      jumlah: jumlah,
-      tanggal: tanggalText,
-      norek: norekText.isEmpty ? '-' : norekText,  // karena norek wajib di model
-    );
+      var kasData = {
+        'kas_jenis': jenisKas.value,
+        'kas_cara': caraKas.value,
+        'kas_jumlah': jumlah,
+        'kas_tanggal': tanggalText,
+        'kas_norek': norekText.isNotEmpty ? norekText : null,
+      };
 
-    if (editingKas == null) {
-      addKas(kas);
-    } else {
-      updateKas(kas);
+      bool success = await _kasMasukService.insert(kasData);
+      if (success) {
+        WidgetSnackbar.success("Berhasil", "Registrasi Menambahkan kas masuk berhasil");
+        Get.offAllNamed(AppRoutesConstants.kasMasuk);
+      } else {
+        WidgetSnackbar.danger("Gagal", "Data Gagal ditambahkan");
+      }
+
+    } catch (e) {
+      print("Error saat menyimpan kas: $e");
+      WidgetSnackbar.danger("Gagal", "Gagal Insert data");
     }
   }
 

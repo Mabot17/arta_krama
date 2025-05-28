@@ -15,9 +15,16 @@ class KasMasukService {
     return result.map((e) => KasMasuk.fromMap(e)).toList();
   }
 
-  Future<int> insert(KasMasuk kas) async {
-    final db = await _dbHelper.database;
-    return await db.insert('kas', kas.toMap());
+  Future<bool> insert(Map<String, dynamic> kas) async {
+    try {
+      final db = await _dbHelper.database;
+
+      await db.insert('kas', kas);
+      return true;
+    } catch (e) {
+      print("❌ Error saat insert kas masuk: $e");
+      return false;
+    }
   }
 
   Future<int> update(KasMasuk kas) async {

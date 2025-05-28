@@ -13,7 +13,9 @@ class DatabaseHelper {
   // Getter database untuk memastikan kita dapat mengakses DB yang aktif
   Future<Database> get database async {
     if (_database == null) {
-      throw Exception('Database belum diinisialisasi. Pastikan untuk membuka database terlebih dahulu.');
+      throw Exception(
+        'Database belum diinisialisasi. Pastikan untuk membuka database terlebih dahulu.',
+      );
     }
     return _database!;
   }
@@ -28,6 +30,7 @@ class DatabaseHelper {
   // Init koneksi berdasarkan koneksi DB di path yang sudah disimpan
   Future<void> initDatabaseOffline() async {
     final savedPath = await _storage.read('offline_db_path');
+    print(savedPath);
     if (savedPath != null) {
       try {
         await openDatabaseFromPath(savedPath);
@@ -36,7 +39,8 @@ class DatabaseHelper {
         // ✅ Cek apakah tabel 'transaksi' sudah ada
         final existingTables = await getAllTables();
 
-        if (!existingTables.contains('user') || !existingTables.contains('kas')) {
+        if (!existingTables.contains('user') ||
+            !existingTables.contains('kas')) {
           print("ℹ️ [Database] Beberapa tabel belum ada. Membuat tabel...");
           await createTables();
         } else {
@@ -52,7 +56,6 @@ class DatabaseHelper {
     }
   }
 
-
   // Untuk mengakses database saat sudah terbuka
   Database? get currentDatabase => _database;
 
@@ -65,7 +68,9 @@ class DatabaseHelper {
   // Fungsi untuk mengambil semua tabel yang ada di database
   Future<List<String>> getAllTables() async {
     final db = await database; // Pastikan database sudah terbuka
-    final result = await db.rawQuery('SELECT name FROM sqlite_master WHERE type="table"');
+    final result = await db.rawQuery(
+      'SELECT name FROM sqlite_master WHERE type="table"',
+    );
     return result.map((table) => table['name'] as String).toList();
   }
 
@@ -120,5 +125,4 @@ class DatabaseHelper {
 
     print("✅ [Database] Tabel user & kas berhasil dicek/dibuat.");
   }
-
 }

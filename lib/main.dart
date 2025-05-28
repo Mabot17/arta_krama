@@ -31,9 +31,10 @@ Future<void> main() async {
   final isDbInitialized = await storageService.read('is_db_initialized') ?? false;
   if (!isDbInitialized) {
     await dbHelper.openDatabaseFromPath(dbPath);
-    await dbHelper.initDatabaseOffline();
     await storageService.write('is_db_initialized', true);
   }
+
+  await dbHelper.initDatabaseOffline();
 
   // Inisialisasi global controller
   Get.put(AuthController());

@@ -39,6 +39,7 @@ class SettingController {
       await sourceFile.copy(destinationPath);
 
       WidgetSnackbar.success("Sukses", "Data berhasil di-backup ke folder Download.");
+      print("Backup sukses: $destinationPath");
     } catch (e) {
       print("Backup error: $e");
       WidgetSnackbar.danger("Gagal", "Gagal memindahkan file ke folder Download.");
