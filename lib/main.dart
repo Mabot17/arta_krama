@@ -27,14 +27,18 @@ Future<void> main() async {
     await storageService.write('offline_db_path', dbPath);
   }
 
-  // Inisialisasi database dan buat tabel-tabel
-  await dbHelper.openDatabaseFromPath(dbPath);
-  await dbHelper.initDatabaseOffline();
+  // Inisialisasi database hanya jika belum pernah dilakukan
+  final isDbInitialized = await storageService.read('is_db_initialized') ?? false;
+  if (!isDbInitialized) {
+    await dbHelper.openDatabaseFromPath(dbPath);
+    await dbHelper.initDatabaseOffline();
+    await storageService.write('is_db_initialized', true);
+  }
 
   // Inisialisasi global controller
   Get.put(AuthController());
 
-  // Menentukan initial route
+  // Tentukan initial route berdasarkan token
   final String? token = await storageService.read<String>('access_token');
   final bool isValidToken = token != null;
 

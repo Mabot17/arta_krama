@@ -52,7 +52,7 @@ class HomeDrawer extends StatelessWidget {
               style: TextStyle(color: Color(0xFF32CD32)),
             ),
             onTap: () {
-              // Tambahkan aksi jika perlu
+              controller.handleMenuTap({'route': '/setting'});
             },
           ),
           const Divider(),

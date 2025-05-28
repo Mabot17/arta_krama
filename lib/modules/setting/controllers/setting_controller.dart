@@ -30,7 +30,9 @@ class SettingController {
         await downloadsDir.create(recursive: true);
       }
 
-      final filename = dbPath.split('/').last;
+      final now = DateTime.now();
+      final formattedDate = '${now.year}${now.month.toString().padLeft(2, '0')}${now.day.toString().padLeft(2, '0')}_${now.hour.toString().padLeft(2, '0')}${now.minute.toString().padLeft(2, '0')}';
+      final filename = 'backup_$formattedDate.db';
       final destinationPath = '${downloadsDir.path}/$filename';
 
       final sourceFile = File(dbPath);
@@ -69,6 +71,7 @@ class SettingController {
       await _storage.write('offline_db_path', destinationPath);
       WidgetSnackbar.success("Sukses", "Database berhasil di-restore.");
       await dbHelper.initDatabaseOffline();
+      await _storage.remove('is_db_initialized');
 
       print("✅ File DB disimpan di: $destinationPath");
       return true;
