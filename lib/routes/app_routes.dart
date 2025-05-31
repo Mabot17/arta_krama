@@ -1,4 +1,5 @@
 import 'package:arta_krama/modules/laporan/arus_kas/laporan_arus_kas_module.dart';
+import 'package:arta_krama/modules/laporan/dashboard/laporan_dashboard_module.dart';
 import 'package:get/get.dart';
 import 'package:arta_krama/modules/auth/login/auth_login_module.dart';
 import 'package:arta_krama/modules/auth/register/auth_register_module.dart';
@@ -18,6 +19,7 @@ class AppRoutes {
     ...KasMasukModule.routes,
     ...KasKeluarModule.routes,
     ...ArusKasModule.routes,
+    ...DashboardModule.routes,
     ...SettingModule.routes,
     
     // Khusus maintenance pemanggilan berbeda karena hanya view saja
