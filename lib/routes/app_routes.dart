@@ -4,6 +4,7 @@ import 'package:arta_krama/modules/auth/register/auth_register_module.dart';
 import 'package:arta_krama/modules/home/home_module.dart';
 import 'package:arta_krama/modules/setting/setting_module.dart';
 import 'package:arta_krama/modules/kas_masuk/kas_masuk_module.dart';
+import 'package:arta_krama/modules/kas_keluar/kas_keluar_module.dart';
 import 'package:arta_krama/modules/global/view/under_construction_view.dart';
 
 class AppRoutes {
@@ -14,6 +15,7 @@ class AppRoutes {
     ...AuthRegisterModule.routes,
     ...SettingModule.routes,
     ...KasMasukModule.routes,
+    ...KasKeluarModule.routes,
     ...SettingModule.routes,
     
     // Khusus maintenance pemanggilan berbeda karena hanya view saja
