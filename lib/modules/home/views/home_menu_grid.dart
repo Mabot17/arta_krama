@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/home_controller.dart';
 import '../models/home_model.dart';
-
 class HomeMenuGrid extends StatelessWidget {
   final HomeController controller;
 
@@ -23,7 +22,7 @@ class HomeMenuGrid extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF32CD32), // Lime Green
+                    color: Color(0xFF32CD32),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -39,9 +38,9 @@ class HomeMenuGrid extends StatelessWidget {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        childAspectRatio: 1.0,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: items.length, // semua item satu baris
+        childAspectRatio: 1,
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
       ),
@@ -60,7 +59,7 @@ class HomeMenuGrid extends StatelessWidget {
       splashColor: const Color(0xFF32CD32).withOpacity(0.3),
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFFE6F4EA), // Very Light Green background
+          color: const Color(0xFFE6F4EA),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -84,11 +83,13 @@ class HomeMenuGrid extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               item['title'],
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 14,
-                color: Color(0xFF1B5E20), // Darker Green
+                color: Color(0xFF1B5E20),
               ),
             ),
           ],
