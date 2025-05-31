@@ -82,7 +82,7 @@ class KasMasukController extends GetxController {
         WidgetSnackbar.success("Berhasil", "Kas masuk berhasil ditambahkan");
         resetForm();
         await fetchData();
-        Get.offAllNamed(AppRoutesConstants.home);
+        Get.offNamedUntil(AppRoutesConstants.kasMasuk, (route) => route.settings.name == AppRoutesConstants.home);
         Get.toNamed(AppRoutesConstants.kasMasuk);
       } else {
         WidgetSnackbar.danger("Gagal", "Data gagal ditambahkan");
@@ -108,7 +108,7 @@ class KasMasukController extends GetxController {
       resetForm();
       editingKas = null;
       await fetchData();
-      Get.offAllNamed(AppRoutesConstants.home);
+      Get.offNamedUntil(AppRoutesConstants.kasMasuk, (route) => route.settings.name == AppRoutesConstants.home);
       Get.toNamed(AppRoutesConstants.kasMasuk);
     } catch (_) {
       WidgetSnackbar.danger("Gagal", "Gagal mengubah kas masuk");
