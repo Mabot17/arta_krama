@@ -1,5 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
+import 'dart:math';
 import 'package:arta_krama/core/utils/storage_service.dart'; // Import StorageService
 
 class DatabaseHelper {
@@ -43,6 +44,7 @@ class DatabaseHelper {
             !existingTables.contains('kas')) {
           print("ℹ️ [Database] Beberapa tabel belum ada. Membuat tabel...");
           await createTables();
+          await insertDummyKasData();
         } else {
           print("✅ [Database] Semua tabel sudah tersedia, skip create.");
         }
@@ -126,4 +128,60 @@ class DatabaseHelper {
 
     print("✅ [Database] Tabel user & kas berhasil dicek/dibuat.");
   }
+
+
+  Future<void> insertDummyKasData() async {
+    final db = await database;
+    final random = Random();
+
+    final now = DateTime.now();
+
+    // Fungsi bantu format tanggal yyyy-MM-dd
+    String formatDate(DateTime d) => "${d.year.toString().padLeft(4,'0')}-${d.month.toString().padLeft(2,'0')}-${d.day.toString().padLeft(2,'0')}";
+
+    // Jenis kas
+    final List<String> jenisKas = ['kas_masuk', 'kas_keluar'];
+
+    // Cara bayar
+    final List<String> caraBayar = ['tunai', 'card'];
+
+    // Contoh keterangan
+    final List<String> keteranganMasuk = ['Penjualan produk', 'Penerimaan jasa', 'Investasi masuk', 'Pendapatan bunga'];
+    final List<String> keteranganKeluar = ['Pembelian bahan', 'Biaya operasional', 'Gaji karyawan', 'Pembayaran listrik'];
+
+    // Insert 90 data (30 hari x 3 bulan)
+    for (int i = 0; i < 90; i++) {
+      // Random pilih kas masuk atau keluar
+      String jenis = jenisKas[random.nextInt(2)];
+
+      // Random tanggal mundur dari hari ini
+      DateTime tanggal = now.subtract(Duration(days: i));
+
+      // Jumlah uang random antara 100.000 sampai 2.000.000
+      double jumlah = 100000 + random.nextInt(1900000).toDouble();
+
+      // Random keterangan sesuai jenis
+      String keterangan = jenis == 'kas_masuk'
+          ? keteranganMasuk[random.nextInt(keteranganMasuk.length)]
+          : keteranganKeluar[random.nextInt(keteranganKeluar.length)];
+
+      // Random cara bayar
+      String cara = caraBayar[random.nextInt(caraBayar.length)];
+
+      // No rekening contoh dummy (boleh kosong juga)
+      String norek = jenis == 'kas_masuk' ? '123-456-789' : '987-654-321';
+
+      await db.insert('kas', {
+        'kas_jenis': jenis,
+        'kas_jumlah': jumlah,
+        'kas_tanggal': formatDate(tanggal),
+        'kas_keterangan': keterangan,
+        'kas_cara': cara,
+        'kas_norek': norek,
+      });
+    }
+
+    print("✅ Dummy data kas selama 3 bulan berhasil dimasukkan.");
+  }
+
 }

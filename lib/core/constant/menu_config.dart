@@ -12,7 +12,7 @@ const String menuJson = '''
       "title": "Laporan",
       "items": [
         { "title": "Dashboard", "icon": "dashboard", "route": "/dashboard" },
-        { "title": "Laporan Periode", "icon": "date_range", "route": "/lap_periode" }
+        { "title": "Laporan Periode", "icon": "date_range", "route": "/arus_kas" }
       ]
     }
   ]

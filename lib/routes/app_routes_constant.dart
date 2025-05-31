@@ -9,6 +9,8 @@ class AppRoutesConstants {
   static const String kasMasukFormIsian = "/kas_masuk/form_isian";
   static const String kasKeluar = "/kas_keluar";
   static const String kasKeluarFormIsian = "/kas_keluar/form_isian";
+
+  static const String arusKas = "/arus_kas";
   
   // Tambahan
   static const String underConstruction = "/under_construction";
