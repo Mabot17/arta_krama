@@ -29,9 +29,12 @@ class HomeDrawer extends StatelessWidget {
                   "user@example.com",
                   style: TextStyle(color: Colors.white70),
                 ),
-                currentAccountPicture: const CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    'https://media-cgk1-2.cdn.whatsapp.net/v/t61.24694-24/424444826_949488943434172_7615880461474394281_n.jpg?ccb=11-4&oh=01_Q5Aa1gFjI_JQq3nDa61EXxMSxdLQ14XQiY_f_nFMn2IE3TpsAw&oe=683FEA64&_nc_sid=5e03e0&_nc_cat=106',
+                currentAccountPicture: CircleAvatar(
+                  backgroundColor: Colors.grey.shade200,
+                  child: Icon(
+                    Icons.person,
+                    size: 40,
+                    color: Colors.grey.shade600,
                   ),
                 ),
               )),

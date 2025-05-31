@@ -31,11 +31,16 @@ class ProfileView extends StatelessWidget {
                   ],
                 ),
                 child: ClipOval(
-                  child: Image.network(
-                    'https://media-cgk1-2.cdn.whatsapp.net/v/t61.24694-24/424444826_949488943434172_7615880461474394281_n.jpg?ccb=11-4&oh=01_Q5Aa1gFjI_JQq3nDa61EXxMSxdLQ14XQiY_f_nFMn2IE3TpsAw&oe=683FEA64&_nc_sid=5e03e0&_nc_cat=106',
+                  child: Container(
+                    color: Colors.grey.shade200,
                     width: 130,
                     height: 130,
-                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
+                    child: Icon(
+                      Icons.person,
+                      size: 60,
+                      color: Colors.grey.shade600,
+                    ),
                   ),
                 ),
               ),

@@ -213,25 +213,68 @@ class ArusKasView extends StatelessWidget {
   }
 
   void _showDetailDialog(BuildContext context, ArusKas item, bool isMasuk) {
+    Color dialogColor = isMasuk ? Colors.green : Colors.redAccent;
+    String title = isMasuk ? "Detail Kas Masuk" : "Detail Kas Keluar";
+
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(isMasuk ? "Detail Kas Masuk" : "Detail Kas Keluar"),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Jumlah: ${formatRupiah.format(item.jumlah)}"),
-            Text("Tanggal: ${item.tanggal}"),
-            if (item.keterangan != null && item.keterangan!.isNotEmpty)
-              Text("Keterangan: ${item.keterangan}"),
-            if (item.norek != null && item.norek!.isNotEmpty)
-              Text("No. Rekening: ${item.norek}"),
-            Text("Cara: ${item.cara}"),
-          ],
+      builder: (_) => Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Container(
+          decoration: BoxDecoration(
+            color: dialogColor,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.info_outline, color: Colors.white, size: 40),
+              const SizedBox(height: 10),
+              Text(title,
+                  style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)),
+              const SizedBox(height: 20),
+              buildRow("Jumlah", formatRupiah.format(item.jumlah)),
+              buildRow("Tanggal", item.tanggal),
+              buildRow("Cara", '${item.cara[0].toUpperCase()}${item.cara.substring(1)}'),
+              if (item.cara == 'transfer') buildRow("No Rek", item.norek ?? '-'),
+              buildRow("Keterangan", item.keterangan ?? '-'),
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(Icons.close),
+                label: const Text("Tutup"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: dialogColor,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                ),
+              ),
+            ],
+          ),
         ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("Tutup")),
+      ),
+    );
+  }
+
+  Widget buildRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+              flex: 3,
+              child: Text("$label:",
+                  style: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w600))),
+          Expanded(flex: 5, child: Text(value, style: const TextStyle(color: Colors.white))),
         ],
       ),
     );
