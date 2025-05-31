@@ -98,7 +98,7 @@ class KasKeluarView extends StatelessWidget {
                 onTap: () => showDetailDialog(context, item),
                 leading: CircleAvatar(
                   radius: 22,
-                  backgroundColor: const Color(0xFF32CD32),
+                  backgroundColor: Colors.redAccent,
                   child: Icon(
                     item.cara == 'tunai' ? Icons.money : Icons.compare_arrows,
                     color: Colors.white,
