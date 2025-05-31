@@ -6,6 +6,7 @@ class KasKeluar {
   final double jumlah;
   final String tanggal;
   final String? norek;
+  final String? keterangan;
 
   KasKeluar({
     this.id,
@@ -13,6 +14,7 @@ class KasKeluar {
     required this.jumlah,
     required this.tanggal,
     this.norek,
+    this.keterangan,
   });
 
   Map<String, dynamic> toMap() {
@@ -23,6 +25,7 @@ class KasKeluar {
       'kas_jumlah': jumlah,
       'kas_tanggal': tanggal,
       'kas_norek': norek,
+      'kas_keterangan': keterangan,
     };
   }
 
@@ -33,6 +36,7 @@ class KasKeluar {
       jumlah: (map['kas_jumlah'] as num).toDouble(),
       tanggal: map['kas_tanggal'],
       norek: map['kas_norek'],
+      keterangan: map['kas_keterangan'],
     );
   }
 

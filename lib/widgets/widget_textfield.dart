@@ -10,6 +10,7 @@ class WidgetTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final bool readOnly;
   final VoidCallback? onTap;
+  final int? maxLines; // Tambahan
 
   const WidgetTextField({
     super.key,
@@ -22,6 +23,7 @@ class WidgetTextField extends StatelessWidget {
     this.validator,
     this.readOnly = false,
     this.onTap,
+    this.maxLines, // Tambahan
   });
 
   @override
@@ -35,6 +37,7 @@ class WidgetTextField extends StatelessWidget {
         validator: validator,
         readOnly: readOnly,
         onTap: onTap,
+        maxLines: maxLines ?? 1, // Tambahan
         decoration: InputDecoration(
           labelText: label,
           prefixIcon: Icon(icon, color: color),

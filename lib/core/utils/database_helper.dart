@@ -118,6 +118,7 @@ class DatabaseHelper {
         kas_jenis TEXT,       -- 'kas_masuk' atau 'kas_keluar'
         kas_jumlah REAL,
         kas_tanggal TEXT,
+        kas_keterangan TEXT,
         kas_cara TEXT,        -- 'tunai' atau 'card'
         kas_norek TEXT
       )

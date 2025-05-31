@@ -21,6 +21,7 @@ class KasKeluarFormIsianView extends StatelessWidget {
       controller.tanggalKasController.text = kas.tanggal;
       controller.caraKas.value = kas.cara;
       controller.norekKasController.text = kas.norek ?? '';
+      controller.keteranganKasController.text = kas.keterangan ?? '';
     }
 
     return Scaffold(
@@ -105,6 +106,15 @@ class KasKeluarFormIsianView extends StatelessWidget {
                 : const SizedBox.shrink(),
               ),
 
+              // Field Keterangan
+              WidgetTextField(
+                label: "Keterangan (opsional)",
+                icon: Icons.note,
+                controller: controller.keteranganKasController,
+                color: const Color(0xFF32CD32),
+                maxLines: 3,
+              ),
+
               const SizedBox(height: 24),
               ElevatedButton.icon(
                 onPressed: () async {
@@ -116,6 +126,7 @@ class KasKeluarFormIsianView extends StatelessWidget {
                         tanggal: controller.tanggalKasController.text,
                         cara: controller.caraKas.value,
                         norek: controller.norekKasController.text.isEmpty ? null : controller.norekKasController.text,
+                        keterangan: controller.keteranganKasController.text,
                       );
                       await controller.updateKas(updatedKas);
                     } else {

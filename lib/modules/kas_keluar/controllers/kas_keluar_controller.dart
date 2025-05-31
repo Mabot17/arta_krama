@@ -18,6 +18,7 @@ class KasKeluarController extends GetxController {
   final TextEditingController jumlahKasController = TextEditingController();
   final TextEditingController tanggalKasController = TextEditingController();
   final TextEditingController norekKasController = TextEditingController();
+  final TextEditingController keteranganKasController = TextEditingController();
 
   KasKeluar? editingKas;
 
@@ -40,6 +41,7 @@ class KasKeluarController extends GetxController {
     jumlahKasController.clear();
     tanggalKasController.clear();
     norekKasController.clear();
+    keteranganKasController.clear();
     caraKas.value = 'tunai';
     editingKas = null;
   }
@@ -50,6 +52,7 @@ class KasKeluarController extends GetxController {
     tanggalKasController.text = kas.tanggal;
     caraKas.value = kas.cara;
     norekKasController.text = kas.norek ?? '';
+    keteranganKasController.text = kas.keterangan ?? '';
   }
 
   Future<void> saveKas() async {

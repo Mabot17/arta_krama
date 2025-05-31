@@ -21,6 +21,7 @@ class KasMasukFormIsianView extends StatelessWidget {
       controller.tanggalKasController.text = kas.tanggal;
       controller.caraKas.value = kas.cara;
       controller.norekKasController.text = kas.norek ?? '';
+      controller.keteranganKasController.text = kas.keterangan ?? '';
     }
 
     return Scaffold(
@@ -65,7 +66,7 @@ class KasMasukFormIsianView extends StatelessWidget {
                 },
               ),
 
-              // Radio pilihan cara kas
+              // Pilihan cara kas
               Obx(() => Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -94,7 +95,7 @@ class KasMasukFormIsianView extends StatelessWidget {
                 ],
               )),
 
-              // Field norek hanya tampil kalau transfer
+              // Field norek jika transfer
               Obx(() => controller.caraKas.value == 'transfer'
                 ? WidgetTextField(
                     label: "No Rekening (opsional)",
@@ -103,6 +104,15 @@ class KasMasukFormIsianView extends StatelessWidget {
                     color: const Color(0xFF32CD32),
                   )
                 : const SizedBox.shrink(),
+              ),
+
+              // Field keterangan
+              WidgetTextField(
+                label: "Keterangan",
+                icon: Icons.note_alt,
+                controller: controller.keteranganKasController,
+                color: const Color(0xFF32CD32),
+                maxLines: 3,
               ),
 
               const SizedBox(height: 24),
@@ -116,6 +126,7 @@ class KasMasukFormIsianView extends StatelessWidget {
                         tanggal: controller.tanggalKasController.text,
                         cara: controller.caraKas.value,
                         norek: controller.norekKasController.text.isEmpty ? null : controller.norekKasController.text,
+                        keterangan: controller.keteranganKasController.text,
                       );
                       await controller.updateKas(updatedKas);
                     } else {
