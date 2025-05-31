@@ -18,6 +18,7 @@ class SettingController {
 
     // Ambil path file database
     final dbPath = await _storage.read('offline_db_path') ?? '';
+    print("Backup from: $dbPath");
     if (dbPath.isEmpty) {
       WidgetSnackbar.danger("Gagal", "Path database tidak ditemukan!");
       return;
@@ -37,9 +38,8 @@ class SettingController {
 
       final sourceFile = File(dbPath);
       await sourceFile.copy(destinationPath);
-
-      WidgetSnackbar.success("Sukses", "Data berhasil di-backup ke folder Download.");
       print("Backup sukses: $destinationPath");
+      WidgetSnackbar.success("Sukses", "Data berhasil di-backup ke folder Download.");
     } catch (e) {
       print("Backup error: $e");
       WidgetSnackbar.danger("Gagal", "Gagal memindahkan file ke folder Download.");

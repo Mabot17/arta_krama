@@ -6,6 +6,7 @@ class KasMasukService {
 
   Future<List<KasMasuk>> getAll() async {
     final db = await _dbHelper.database;
+    print("DATABASE PATH: ${db.path}");
     final result = await db.query(
       'kas',
       where: 'kas_jenis = ?',
@@ -27,14 +28,20 @@ class KasMasukService {
     }
   }
 
-  Future<int> update(KasMasuk kas) async {
-    final db = await _dbHelper.database;
-    return await db.update(
-      'kas',
-      kas.toMap(),
-      where: 'kas_id = ?',
-      whereArgs: [kas.id],
-    );
+  Future<bool> update(KasMasuk kas) async {
+    try {
+      final db = await _dbHelper.database;
+      await db.update(
+        'kas',
+        kas.toMap(),
+        where: 'kas_id = ?',
+        whereArgs: [kas.id],
+      );
+      return true;
+    } catch (e) {
+      print("❌ Error saat insert kas masuk: $e");
+      return false;
+    }
   }
 
   Future<int> delete(int id) async {

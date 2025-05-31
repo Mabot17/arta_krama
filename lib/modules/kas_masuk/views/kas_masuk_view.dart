@@ -47,10 +47,31 @@ class KasMasukView extends StatelessWidget {
                     Text("Cara: ${item.cara} | No Rek: ${item.norek ?? '-'}"),
                   ],
                 ),
-                trailing: IconButton(
-                  icon: const Icon(Icons.edit, color: Color(0xFF32CD32)),
-                  onPressed: () => controller.goToEditPage(item),
+                // Ganti trailing pada ListTile seperti ini:
+                trailing: PopupMenuButton<String>(
+                  onSelected: (value) {
+                    if (value == 'edit') {
+                      controller.goToEditPage(item);
+                    } else if (value == 'delete') {
+                      Get.defaultDialog(
+                        title: "Konfirmasi",
+                        middleText: "Yakin ingin menghapus kas masuk ini?",
+                        textConfirm: "Ya",
+                        textCancel: "Tidak",
+                        confirmTextColor: Colors.white,
+                        onConfirm: () {
+                          controller.deleteKas(item.id!);
+                          Get.back();
+                        },
+                      );
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    const PopupMenuItem(value: 'edit', child: Text('Edit')),
+                    const PopupMenuItem(value: 'delete', child: Text('Hapus')),
+                  ],
                 ),
+
               ),
             );
           },

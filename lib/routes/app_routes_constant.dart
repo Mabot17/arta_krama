@@ -6,7 +6,7 @@ class AppRoutesConstants {
 
   // Modul Master
   static const String kasMasuk = "/kas_masuk";
-  static const String kasMasukForm = "/kas_masuk/form_isian";
+  static const String kasMasukFormIsian = "/kas_masuk/form_isian";
   static const String kasKeluar = "/kas_keluar";
   
   // Tambahan
