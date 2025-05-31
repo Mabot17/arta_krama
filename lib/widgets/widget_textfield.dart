@@ -7,6 +7,9 @@ class WidgetTextField extends StatelessWidget {
   final bool isPassword;
   final TextInputType keyboard;
   final Color color;
+  final String? Function(String?)? validator;
+  final bool readOnly;
+  final VoidCallback? onTap;
 
   const WidgetTextField({
     super.key,
@@ -16,16 +19,22 @@ class WidgetTextField extends StatelessWidget {
     required this.color,
     this.isPassword = false,
     this.keyboard = TextInputType.text,
+    this.validator,
+    this.readOnly = false,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
         obscureText: isPassword,
         keyboardType: keyboard,
+        validator: validator,
+        readOnly: readOnly,
+        onTap: onTap,
         decoration: InputDecoration(
           labelText: label,
           prefixIcon: Icon(icon, color: color),

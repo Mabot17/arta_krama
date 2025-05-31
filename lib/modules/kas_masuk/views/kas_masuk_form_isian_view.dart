@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:arta_krama/modules/kas_masuk/controllers/kas_masuk_controller.dart';
 import 'package:arta_krama/modules/kas_masuk/models/kas_masuk_model.dart';
+import 'package:arta_krama/widgets/widget_appbar.dart';
+import 'package:arta_krama/widgets/widget_textfield.dart';
 
 class KasMasukFormIsianView extends StatelessWidget {
   final KasMasukController controller = Get.find<KasMasukController>();
@@ -12,7 +14,7 @@ class KasMasukFormIsianView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final KasMasuk? kas = Get.arguments;
-    
+
     if (kas != null && controller.editingKas == null) {
       controller.editingKas = kas;
       controller.jumlahKasController.text = kas.jumlah.toString();
@@ -22,31 +24,33 @@ class KasMasukFormIsianView extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(kas == null ? "Tambah Kas Masuk" : "Edit Kas Masuk"),
-        backgroundColor: const Color(0xFF32CD32),
-      ),
+      appBar: WidgetAppBar(title: kas == null ? "Tambah Kas Masuk" : "Edit Kas Masuk"),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: ListView(
             children: [
-              TextFormField(
+              WidgetTextField(
+                label: "Jumlah (Rp)",
+                icon: Icons.attach_money,
                 controller: controller.jumlahKasController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: "Jumlah (Rp)"),
+                color: const Color(0xFF32CD32),
+                keyboard: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) return 'Wajib diisi';
                   if (double.tryParse(value) == null) return 'Masukkan angka valid';
                   return null;
                 },
               ),
-              const SizedBox(height: 12),
-              TextFormField(
+
+              WidgetTextField(
+                label: "Tanggal",
+                icon: Icons.calendar_today,
                 controller: controller.tanggalKasController,
+                color: const Color(0xFF32CD32),
                 readOnly: true,
-                decoration: const InputDecoration(labelText: "Tanggal"),
                 validator: (value) => (value == null || value.isEmpty) ? 'Wajib diisi' : null,
                 onTap: () async {
                   DateTime? picked = await showDatePicker(
@@ -60,22 +64,47 @@ class KasMasukFormIsianView extends StatelessWidget {
                   }
                 },
               ),
-              const SizedBox(height: 12),
-              Obx(() => DropdownButtonFormField(
-                value: controller.caraKas.value,
-                items: ['tunai', 'transfer'].map((c) {
-                  return DropdownMenuItem(value: c, child: Text(c.capitalize!));
-                }).toList(),
-                onChanged: (value) {
-                  if (value != null) controller.caraKas.value = value.toString();
-                },
-                decoration: const InputDecoration(labelText: "Cara Kas"),
+
+              // Radio pilihan cara kas
+              Obx(() => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 12),
+                  const Text("Cara Kas", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  ListTile(
+                    title: const Text("Tunai"),
+                    leading: Radio<String>(
+                      value: "tunai",
+                      groupValue: controller.caraKas.value,
+                      onChanged: (value) {
+                        if (value != null) controller.caraKas.value = value;
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: const Text("Transfer"),
+                    leading: Radio<String>(
+                      value: "transfer",
+                      groupValue: controller.caraKas.value,
+                      onChanged: (value) {
+                        if (value != null) controller.caraKas.value = value;
+                      },
+                    ),
+                  ),
+                ],
               )),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: controller.norekKasController,
-                decoration: const InputDecoration(labelText: "No Rekening (opsional)"),
+
+              // Field norek hanya tampil kalau transfer
+              Obx(() => controller.caraKas.value == 'transfer'
+                ? WidgetTextField(
+                    label: "No Rekening (opsional)",
+                    icon: Icons.account_balance,
+                    controller: controller.norekKasController,
+                    color: const Color(0xFF32CD32),
+                  )
+                : const SizedBox.shrink(),
               ),
+
               const SizedBox(height: 24),
               ElevatedButton.icon(
                 onPressed: () async {
